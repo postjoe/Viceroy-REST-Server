@@ -1,0 +1,13 @@
+
+# Modules
+node_modules
+
+# Project Files
+*.sublime-*
+
+# AWS Config
+.elasticbeanstalk/
+.tern*
+
+# Junk
+tmp

@@ -1,0 +1,4 @@
+--require should
+--bail
+--check-leaks
+--reporter spec
