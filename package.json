@@ -22,5 +22,10 @@
     "connect": "~2.11.2",
     "superagent": "~0.15.7",
     "viceroy": "~1.4.1"
+  },
+  "dependencies": {
+    "lingo": "0.0.5",
+    "primitive": "~0.3.0",
+    "connect": "~2.11.2"
   }
 }
