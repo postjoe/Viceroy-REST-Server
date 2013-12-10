@@ -11,7 +11,7 @@ var viceroyREST = require('viceroy-rest');
 var viceroyRESTServer = require('../');
 var Model = viceroy.Model;
 
-xdescribe('viceroy and viceroy REST intergration', function() {
+describe('viceroy and viceroy REST intergration', function() {
 
   // create the web server and bind it to port 8025
   before(function(done) {
@@ -95,10 +95,37 @@ xdescribe('viceroy and viceroy REST intergration', function() {
     }, function(err, robert) {
       if(err) { done(err); return; }
       robert.should.exist;
-      console.log(robert.data());
       robert._id.should.exist;
       robert.name.should.equal('Robert');
       done();
+    });
+  });
+
+  it('can find a model', function(done) {
+    this.Person.findOne({
+      name: 'Robert'
+    }, function(err, robert) {
+      if(err) { done(err); return; }
+      robert.should.exist;
+      robert._id.should.exist;
+      robert.name.should.equal('Robert');
+      done();
+    });
+  });
+
+  it('can remove a model', function(done) {
+    var _this = this;
+    this.Person.remove({
+      name: 'Robert'
+    }, function(err) {
+      if(err) { done(err); return; }
+      _this.Person.findOne({
+        name: 'Robert'
+      }, function(err, robert) {
+        if(err) { done(err); return; }
+        (!robert).should.be.true;
+        done();
+      });
     });
   });
 });
