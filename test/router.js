@@ -190,7 +190,7 @@ describe('router', function() {
       this.router._routes['/posts/:id']['delete'].should.be.type('object');
     });
 
-    it('sets a series of sub route objects on the router when in a url context', function(done) {
+    it('nests sub resources under the parent resource namespace', function(done) {
       this.router.resource('posts', function(router) {
         router.resource('comments', function() {});
         router._routes['/posts/:postId/comments'].should.be.type('object');
@@ -199,6 +199,17 @@ describe('router', function() {
         router._routes['/posts/:postId/comments/:id'].get.should.be.type('object');
         router._routes['/posts/:postId/comments/:id'].patch.should.be.type('object');
         router._routes['/posts/:postId/comments/:id']['delete'].should.be.type('object');
+        done();
+      });
+    });
+
+    it('adds sub routes to the parent resource namespace', function(done) {
+      this.router.resource('posts', function(router) {
+        router.get('authors', 'posts#getAuthors');
+        router._routes['/posts/authors'].should.be.type('object');
+        router._routes['/posts/authors'].get.should.be.type('object');
+        router._routes['/posts/authors'].get.controller.should.equal('posts');
+        router._routes['/posts/authors'].get.action.should.equal('getAuthors');
         done();
       });
     });
@@ -213,7 +224,8 @@ describe('router', function() {
     it('switches the url context when entering the sub routes callback', function() {
       var _this = this;
       this.router.resource('posts', 'postsCtrl', function(router) {
-        _this.router._contextUrl.should.equal('/posts/:postId');
+        _this.router._contextUrl.should.equal('/posts');
+        _this.router._contextIdToken.should.equal(':postId');
       });
     });
 
