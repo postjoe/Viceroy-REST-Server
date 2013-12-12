@@ -138,12 +138,4 @@ describe('viceroyRESTServer (instance)', function() {
       });
     });
   });
-
-
-  describe('resource', function() {
-
-    it('accepts a pluralized, lowercase model name', function() {
-      this.server.resource
-    });
-  });
 });
