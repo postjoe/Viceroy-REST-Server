@@ -102,23 +102,23 @@ describe('router', function() {
       });
 
       it('accepts routeUrl and opts', function() {
-        this.router[method]('about', { controller: 'pages' });
+        this.router[method]('about', { controller: 'pages', action: 'about' });
       });
 
       it('accepts routeUrl and opts string', function() {
-        this.router[method]('about', 'pages');
+        this.router[method]('about', 'pages#about');
       });
 
       it('accepts routeUrl and sub routes callback', function() {
-        this.router[method]('about', 'pages', function() {});
+        this.router[method]('about', 'pages#about', function() {});
       });
 
       it('accepts routeUrl, opts string, and sub routes callback', function() {
-        this.router[method]('about', 'pages', function() {});
+        this.router[method]('about', 'pages#about', function() {});
       });
 
       it('sets a route object on the router', function() {
-        this.router[method]('about', 'pages', function() {});
+        this.router[method]('about', 'pages#about', function() {});
         this.router._routes['/about'].should.be.type('object');
         if(method == 'del') { method = 'delete'; }
         this.router._routes['/about'][method].should.be.type('object');
@@ -128,21 +128,21 @@ describe('router', function() {
 
       it('calls the sub routes callback passing it the router', function() {
         var _this = this;
-        this.router[method]('about', 'pages', function(router) {
+        this.router[method]('about', 'pages#about', function(router) {
           router.should.equal(_this.router);
         });
       });
 
       it('switches the url context when entering the sub routes callback', function() {
         var _this = this;
-        this.router[method]('about', 'pages', function(router) {
+        this.router[method]('about', 'pages#about', function(router) {
           _this.router._contextUrl.should.equal('/about');
         });
       });
 
       it('restores the url context when after exiting sub routes callback', function() {
         var executed = false;
-        this.router[method]('about', 'pages', function(router) {
+        this.router[method]('about', 'pages#about', function(router) {
           executed = true;
         });
         executed.should.be.true;
