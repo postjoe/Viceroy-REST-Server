@@ -225,7 +225,7 @@ describe('router', function() {
       var _this = this;
       this.router.resource('posts', 'postsCtrl', function(router) {
         _this.router._contextUrl.should.equal('/posts');
-        _this.router._contextIdToken.should.equal(':postId');
+        _this.router._contextId.should.equal(':postId');
       });
     });
 
