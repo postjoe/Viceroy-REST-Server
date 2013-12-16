@@ -31,6 +31,12 @@ viceroy.use(server.middleware());
 
 // load a people resource
 server.loadRoutes(function(router) {
+  // this creates the following routes for 'people':
+  // create: POST /people
+  // show: GET /people/:id
+  // index: GET /people
+  // update: PUT /people/:id
+  // destroy: DELETE /people/:id
   router.resource('people');
 });
 
@@ -49,5 +55,7 @@ viceroy.connect(function() {
   // bind the web server to port 8000
   app.listen(8000);
 });
+
+
 ```
 
