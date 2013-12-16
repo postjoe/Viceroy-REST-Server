@@ -41,7 +41,7 @@ describe('viceroy and viceroy REST intergration', function() {
 
     // add the REST server middleware to viceroy
     this.serverViceroy.use(this.RESTServer.middleware());
-      
+
     // add the person model
     function Person() {
       Model.apply(this, arguments);
@@ -65,7 +65,7 @@ describe('viceroy and viceroy REST intergration', function() {
       host: 'localhost',
       port: 8025
     }));
-    
+
     // add the person model
     function Person() {
       Model.apply(this, arguments);
