@@ -1,5 +1,12 @@
+# Viceroy-REST-Server
 
+Viceroy REST Server contains middleware for express and [Viceroy] [1].
+It allows you to create RESTful routes as well as custom routes based on
+your Viceroy Models.
 
+## Sample Code:
+
+```javascript
 // modules
 var util = require('util');
 var connect = require('connect');
@@ -7,7 +14,7 @@ var viceroy = require('viceroy');
 var viceroyNeDB = require('viceroy-nedb');
 
 // libs
-var viceroyRestServer = require('../');
+var viceroyRestServer = require('viceroy-rest-server');
 var Model = viceroy.Model;
 
 // create the web server
@@ -49,4 +56,6 @@ viceroy.connect(function() {
   app.listen(8000);
 });
 
+
+```
 

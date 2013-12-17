@@ -23,7 +23,7 @@
     "superagent": "~0.15.7",
     "viceroy": "~1.4.1",
     "viceroy-nedb": "0.0.1",
-    "viceroy-rest": "0.0.1"
+    "viceroy-rest": "0.0.2"
   },
   "dependencies": {
     "lingo": "0.0.5",
