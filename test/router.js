@@ -94,11 +94,8 @@ describe('router', function() {
         }).should.throw();
       });
 
-      it('throws if a routeUrl and opts is not given', function() {
-        var _this = this;
-        (function() {
-          _this.router[method]('about');
-        }).should.throw();
+      it('accepts routeUrl', function() {
+        this.router[method]('about');
       });
 
       it('accepts routeUrl and opts', function() {
@@ -136,7 +133,8 @@ describe('router', function() {
       it('switches the url context when entering the sub routes callback', function() {
         var _this = this;
         this.router[method]('about', 'pages#about', function(router) {
-          _this.router._contextUrl.should.equal('/about');
+          _this.router._context.length.should.equal(1);
+          _this.router._context[0].should.equal('about');
         });
       });
 
@@ -146,7 +144,7 @@ describe('router', function() {
           executed = true;
         });
         executed.should.be.true;
-        this.router._contextUrl.should.equal('');
+        this.router._context.length.should.equal(0);
       });
     });
   });
@@ -181,7 +179,7 @@ describe('router', function() {
     });
 
     it('sets a series of route objects on the router', function() {
-      this.router.resource('posts', function() {});
+      this.router.resource('posts');
       this.router._routes['/posts'].should.be.type('object');
       this.router._routes['/posts'].get.should.be.type('object');
       this.router._routes['/posts'].post.should.be.type('object');
@@ -190,16 +188,62 @@ describe('router', function() {
       this.router._routes['/posts/:id']['delete'].should.be.type('object');
     });
 
+    it('sets a series of route objects on the router for a singular resource', function() {
+      this.router.resource('about');
+      this.router._routes['/about'].should.be.type('object');
+      this.router._routes['/about'].get.should.be.type('object');
+      this.router._routes['/about'].post.should.be.type('object');
+      this.router._routes['/about'].patch.should.be.type('object');
+      this.router._routes['/about']['delete'].should.be.type('object');
+    });
+
+    it('sets a middleware on sub routes correctly', function() {
+      this.router.resource('posts', {
+        middleware: [
+          {
+            handler: function() {},
+            not: ['index', 'destroy']
+          }, {
+            handler: function() {},
+            only: ['foo']
+          }
+        ]
+      });
+      this.router._routes['/posts'].post.should.be.type('object');
+      this.router._routes['/posts/:id'].get.should.be.type('object');
+      this.router._routes['/posts/:id'].patch.should.be.type('object');
+      this.router._routes['/posts/:id']['delete'].should.be.type('object');
+    });
+
     it('nests sub resources under the parent resource namespace', function(done) {
       this.router.resource('posts', function(router) {
-        router.resource('comments', function() {});
+        router.resource('comments');
         router._routes['/posts/:postId/comments'].should.be.type('object');
         router._routes['/posts/:postId/comments'].get.should.be.type('object');
         router._routes['/posts/:postId/comments'].post.should.be.type('object');
         router._routes['/posts/:postId/comments/:id'].get.should.be.type('object');
         router._routes['/posts/:postId/comments/:id'].patch.should.be.type('object');
         router._routes['/posts/:postId/comments/:id']['delete'].should.be.type('object');
+        router._routes['/posts/:postId/comments'].get.context[0].resourceName.should.equal('posts');
+        router._routes['/posts/:postId/comments'].get.context[0].idToken.should.equal(':postId');
+        router._routes['/posts/:postId/comments'].get.context[1].resourceName.should.equal('comments');
+        router._routes['/posts/:postId/comments'].get.context[1].idToken.should.equal(':id');
         done();
+      });
+    });
+
+    it('nests sub resources of sub resources under the sub resource namespace above and the parent namespace', function(done) {
+      this.router.resource('posts', function(router) {
+        router.resource('comments', function() {
+          router.resource('replies');
+          router._routes['/posts/:postId/comments/:commentId/replies'].should.be.type('object');
+          router._routes['/posts/:postId/comments/:commentId/replies'].get.should.be.type('object');
+          router._routes['/posts/:postId/comments/:commentId/replies'].post.should.be.type('object');
+          router._routes['/posts/:postId/comments/:commentId/replies/:id'].get.should.be.type('object');
+          router._routes['/posts/:postId/comments/:commentId/replies/:id'].patch.should.be.type('object');
+          router._routes['/posts/:postId/comments/:commentId/replies/:id']['delete'].should.be.type('object');
+          done();
+        });
       });
     });
 
@@ -224,8 +268,9 @@ describe('router', function() {
     it('switches the url context when entering the sub routes callback', function() {
       var _this = this;
       this.router.resource('posts', 'postsCtrl', function(router) {
-        _this.router._contextUrl.should.equal('/posts');
-        _this.router._contextId.should.equal(':postId');
+        _this.router._context.length.should.equal(1);
+        _this.router._context[0].should.equal('posts');
+        _this.router._contextIdToken.should.equal(':postId');
       });
     });
 
@@ -235,7 +280,8 @@ describe('router', function() {
         executed = true;
       });
       executed.should.be.true;
-      this.router._contextUrl.should.equal('');
+      this.router._context.length.should.equal(0);
+      (!this.router._contextIdToken).should.be.true;
     });
   });
 });
