@@ -21,13 +21,14 @@
     "should": "~2.1.1",
     "connect": "~2.11.2",
     "superagent": "~0.15.7",
-    "viceroy": "1.5.1",
+    "viceroy": "1.7.3",
     "viceroy-nedb": "0.0.1",
-    "viceroy-rest": "0.0.4"
+    "viceroy-rest": "0.0.7"
   },
   "dependencies": {
     "lingo": "0.0.5",
     "primitive": "0.4.0",
-    "connect": "~2.11.2"
+    "connect": "~2.11.2",
+    "nedb": "~0.9.3"
   }
 }
