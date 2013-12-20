@@ -113,7 +113,7 @@ describe('viceroy and viceroy REST intergration', function() {
     });
   });
 
-  it('can remove a model', function(done) {
+  xit('can remove a model', function(done) {
     var _this = this;
     this.Person.remove({
       name: 'Robert'
