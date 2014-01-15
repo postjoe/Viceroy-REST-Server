@@ -120,6 +120,17 @@ describe('router', function() {
         if(method == 'del') { method = 'delete'; }
         this.router._routes['/about'][method].should.be.type('object');
         this.router._routes['/about'][method].controller.should.equal('pages');
+        this.router._routes['/about'][method].action.should.equal('about');
+        if(method == 'delete') { method = 'del'; }
+      });
+
+      it('correctly binds root', function() {
+        this.router[method]('', 'pages#index', function() {});
+        this.router._routes['/'].should.be.type('object');
+        if(method == 'del') { method = 'delete'; }
+        this.router._routes['/'][method].should.be.type('object');
+        this.router._routes['/'][method].controller.should.equal('pages');
+        this.router._routes['/'][method].action.should.equal('index');
         if(method == 'delete') { method = 'del'; }
       });
 
