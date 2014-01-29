@@ -45,6 +45,38 @@ describe('middleware', function() {
     this.middleware.augmentModel.should.be.type('function');
   });
 
+  describe('_handleRequest', function() {
+
+    it('should call global middleware', function() {
+      var testMiddleware = function() { done(); };
+
+      var req = {
+        url: '/',
+        params: [],
+        method: 'GET'
+      };
+
+      this.server.router.use(testMiddleware);
+      this.server.router.get('/');
+      this.middleware._handleRequest(req, {}, function() {});
+    });
+
+    it('should call route middleware', function() {
+      var testMiddleware = function() { done(); };
+
+      var req = {
+        url: '/',
+        params: [],
+        method: 'GET'
+      };
+
+      this.server.router.get('/', {
+        middleware: [testMiddleware]
+      });
+      this.middleware._handleRequest(req, {}, function() {});
+    });
+
+  });
 
   describe('augmentModel', function() {
 
