@@ -42,6 +42,29 @@ describe('router', function() {
     this.router.del.should.be.type('function');
   });
 
+  describe('use', function() {
+
+    it('throws if no args are passed', function() {
+      var _this = this;
+      (function() {
+        _this.router.use();
+      }).should.throw();
+    });
+
+    it('throws if a non function is passed', function() {
+      var _this = this;
+      (function() {
+        _this.router.use('string');
+      }).should.throw();
+    });
+
+    it('adds middleware to the router', function() {
+      var testMiddleware = function() {};
+      this.router.use(testMiddleware);
+      this.router._middleware.length.should.equal(1);
+      this.router._middleware[0].should.equal(testMiddleware);
+    });
+  });
 
   describe('loadRoutes', function() {
 
