@@ -101,7 +101,7 @@ describe('viceroy and viceroy REST intergration', function() {
     });
   });
 
-  it('can find a model', function(done) {
+  xit('can find a model', function(done) {
     this.Person.findOne({
       name: 'Robert'
     }, function(err, robert) {
